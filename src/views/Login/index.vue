@@ -3,8 +3,16 @@
     <div class="login-warp">
       <div class="login-inner">
         <div class="login-title">
-          <span class="active">登录</span>
-          <span>注册</span>
+          <span
+            :class="{ active: login.isActive === 'login' }"
+            @click="loginSwitch('login')"
+            >登录</span
+          >
+          <span
+            :class="{ active: login.isActive !== 'login' }"
+            @click="loginSwitch('register')"
+            >注册</span
+          >
         </div>
         <div class="login-content">
           <el-form
@@ -19,7 +27,24 @@
               <el-input v-model="form.username" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-              <el-input v-model="form.password" autocomplete="off"></el-input>
+              <el-input
+                v-model="form.password"
+                autocomplete="off"
+                min="6"
+                max="16"
+              ></el-input>
+            </el-form-item>
+            <el-form-item
+              label="重复密码"
+              prop="passwordAgin"
+              min="6"
+              max="16"
+              v-show="login.isActive === 'register'"
+            >
+              <el-input
+                v-model="form.passwordAgin"
+                autocomplete="off"
+              ></el-input>
             </el-form-item>
             <el-row>
               <el-col :span="16">
@@ -27,6 +52,8 @@
                   <el-input
                     v-model="form.keycode"
                     autocomplete="off"
+                    min="6"
+                    max="6"
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -60,39 +87,89 @@
 export default {
   data() {
     let checkUsername = (rule, value, callback) => {
+      let pattern = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+
       if (!value) {
         return callback(new Error('邮箱不能为空'))
       }
-      setTimeout(() => {
-        // 可以对value进行检测
-      }, 1000)
+
+      if (pattern.test(value)) {
+        return callback()
+      } else {
+        return callback(new Error('请输入正确的邮箱格式'))
+      }
     }
 
     let validatePass = (rule, value, callback) => {
+      let pattern = /^[\w_-]{6,16}$/
+
       if (!value) {
         return callback(new Error('密码不能为空'))
+      }
+
+      if (pattern.test(value)) {
+        return callback()
+      } else {
+        return callback(new Error('密码由6-16位组成'))
+      }
+    }
+
+    let validatePassAgin = (rule, value, callback) => {
+      let pattern = /^[\w_-]{6,16}$/
+
+      // 如果是登录的话 这个框不需要验证直接通过验证
+      if (this.login.isActive === 'login') callback()
+
+      if (!value) {
+        return callback(new Error('重复密码不能为空'))
+      }
+
+      if (pattern.test(value)) {
+        return callback()
+      } else if (value !== this.form.password) {
+        return callback(new Error('两次输入的密码不一致'))
+      } else {
+        return callback(new Error('密码由6-16位组成'))
       }
     }
 
     let validateKeycode = (rule, value, callback) => {
+      let parent = /^\d{6}$/
+
       if (!value) {
         return callback(new Error('验证码不能为空'))
+      }
+
+      if (parent.test(value)) {
+        return callback()
+      } else {
+        return callback(new Error('验证码为6位数字组成'))
       }
     }
     return {
       form: {
         username: '',
         password: '',
-        keycode: ''
+        keycode: '',
+        passwordAgin: ''
       },
       rules: {
         username: [{ validator: checkUsername, trigger: 'blur' }],
         password: [{ validator: validatePass, trigger: 'blur' }],
-        keycode: [{ validator: validateKeycode, trigger: 'blur' }]
+        keycode: [{ validator: validateKeycode, trigger: 'blur' }],
+        passwordAgin: [{ validator: validatePassAgin, trigger: 'blur' }]
+      },
+      login: {
+        isActive: 'login'
       }
     }
   },
   methods: {
+    loginSwitch(msgText) {
+      this.login.isActive = msgText
+      // 切换后将表单数据清空
+      this.$refs.form.resetFields()
+    },
     onSubmit(form) {
       this.$refs[form].validate((valid, obj) => {
         if (valid) {
@@ -143,6 +220,7 @@ export default {
       font-size: 16px;
       text-align: center;
       border-radius: 3px;
+      cursor: pointer;
       &.active {
         background-color: #30353a54;
       }
