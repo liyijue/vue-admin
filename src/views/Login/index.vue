@@ -84,16 +84,17 @@
 </template>
 
 <script>
+import { patternEmali, patternPassword, patterKeyCode } from '@/utils/validator'
+import { getLogin } from '@/api/login'
+
 export default {
   data() {
     let checkUsername = (rule, value, callback) => {
-      let pattern = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-
       if (!value) {
         return callback(new Error('邮箱不能为空'))
       }
 
-      if (pattern.test(value)) {
+      if (patternEmali(value)) {
         return callback()
       } else {
         return callback(new Error('请输入正确的邮箱格式'))
@@ -101,13 +102,11 @@ export default {
     }
 
     let validatePass = (rule, value, callback) => {
-      let pattern = /^[\w_-]{6,16}$/
-
       if (!value) {
         return callback(new Error('密码不能为空'))
       }
 
-      if (pattern.test(value)) {
+      if (patternPassword(value)) {
         return callback()
       } else {
         return callback(new Error('密码由6-16位组成'))
@@ -115,8 +114,6 @@ export default {
     }
 
     let validatePassAgin = (rule, value, callback) => {
-      let pattern = /^[\w_-]{6,16}$/
-
       // 如果是登录的话 这个框不需要验证直接通过验证
       if (this.login.isActive === 'login') callback()
 
@@ -124,7 +121,7 @@ export default {
         return callback(new Error('重复密码不能为空'))
       }
 
-      if (pattern.test(value)) {
+      if (patterKeyCode(value)) {
         return callback()
       } else if (value !== this.form.password) {
         return callback(new Error('两次输入的密码不一致'))
@@ -173,6 +170,7 @@ export default {
     onSubmit(form) {
       this.$refs[form].validate((valid, obj) => {
         if (valid) {
+          getLogin()
           alert('submit')
         } else {
           console.log('error submit!', obj)
