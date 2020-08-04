@@ -86,7 +86,7 @@
 
 <script>
 import { patternEmali, patternPassword, patterKeyCode } from '@/utils/validator'
-import { getKeycode } from '@/api/login'
+import { POSTGetKeycode, POSTRegister, POSTLogin } from '@/api/login'
 
 export default {
   data() {
@@ -122,26 +122,24 @@ export default {
         return callback(new Error('重复密码不能为空'))
       }
 
-      if (patterKeyCode(value)) {
-        return callback()
-      } else if (value !== this.form.password) {
+      if (value !== this.form.password) {
         return callback(new Error('两次输入的密码不一致'))
+      } else if (patternPassword(value)) {
+        return callback()
       } else {
         return callback(new Error('密码由6-16位组成'))
       }
     }
 
     let validateKeycode = (rule, value, callback) => {
-      let parent = /^\d{6}$/
-
       if (!value) {
         return callback(new Error('验证码不能为空'))
       }
 
-      if (parent.test(value)) {
+      if (patterKeyCode(value)) {
         return callback()
       } else {
-        return callback(new Error('验证码为6位数字组成'))
+        return callback(new Error('验证码为6位数字+字母组成'))
       }
     }
     return {
@@ -154,8 +152,8 @@ export default {
       rules: {
         username: [{ validator: checkUsername, trigger: 'blur' }],
         password: [{ validator: validatePass, trigger: 'blur' }],
-        keycode: [{ validator: validateKeycode, trigger: 'blur' }],
-        passwordAgin: [{ validator: validatePassAgin, trigger: 'blur' }]
+        passwordAgin: [{ validator: validatePassAgin, trigger: 'blur' }],
+        keycode: [{ validator: validateKeycode, trigger: 'blur' }]
       },
       login: {
         isActive: 'login'
@@ -170,15 +168,56 @@ export default {
     },
     // 获取验证码
     handleGetKeycode() {
-      getKeycode().then(res => {
-        console.log(res)
+      if (!patternEmali(this.form.username))
+        return this.$message.error('请输入正确的邮箱格式！')
+
+      POSTGetKeycode({
+        username: this.form.username,
+        module: this.login.isActive
       })
+        .then(({ data }) => {
+          if (data.resCode !== 0) return this.$message.error(data.message)
+          this.$message({
+            message: '获取验证码成功',
+            type: 'success'
+          })
+          // 打印验证码
+          console.log(data.message)
+        })
+        .catch(error => {
+          new Error(error)
+        })
     },
     onSubmit(form) {
       this.$refs[form].validate((valid, obj) => {
         if (valid) {
-          alert('submit')
+          // 登录 注册 模式
+          let activeModel =
+            this.login.isActive === 'register' ? POSTRegister : POSTLogin
+
+          activeModel({
+            username: this?.form?.username,
+            password: this?.form?.password,
+            code: this?.form?.keycode
+          })
+            .then(({ data }) => {
+              if (data.resCode !== 0) {
+                this.form.keycode = ''
+                return this.$message.error(data.message)
+              }
+
+              this.$message({
+                message:
+                  this.login.isActive === 'register' ? '注册成功' : '登录成功',
+                type: 'success'
+              })
+              this.loginSwitch('login')
+            })
+            .catch(error => {
+              new Error(error)
+            })
         } else {
+          this.form.keycode = ''
           console.log('error submit!', obj)
           return false
         }

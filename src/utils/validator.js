@@ -6,4 +6,4 @@ export const patternEmali = value =>
 export const patternPassword = value => /^[\w_-]{6,16}$/.test(value)
 
 // 验证验证码
-export const patterKeyCode = value => /^[\w_-]{6,16}$/.test(value)
+export const patterKeyCode = value => /^[a-zA-Z0-9]{6,}$/.test(value)
