@@ -63,6 +63,7 @@
                   class="block"
                   type="success"
                   :style="{ marginTop: '31px', marginLeft: '8px' }"
+                  @click="handleGetKeycode()"
                 >
                   获取验证码
                 </el-button>
@@ -85,7 +86,7 @@
 
 <script>
 import { patternEmali, patternPassword, patterKeyCode } from '@/utils/validator'
-import { getLogin } from '@/api/login'
+import { getKeycode } from '@/api/login'
 
 export default {
   data() {
@@ -167,10 +168,15 @@ export default {
       // 切换后将表单数据清空
       this.$refs.form.resetFields()
     },
+    // 获取验证码
+    handleGetKeycode() {
+      getKeycode().then(res => {
+        console.log(res)
+      })
+    },
     onSubmit(form) {
       this.$refs[form].validate((valid, obj) => {
         if (valid) {
-          getLogin()
           alert('submit')
         } else {
           console.log('error submit!', obj)

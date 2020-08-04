@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const service = axios.create()
+const service = axios.create({
+  baseURL: '/api',
+  timeout: 5000
+})
 
 // 添加请求拦截器
 service.interceptors.request.use(
