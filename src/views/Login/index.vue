@@ -62,10 +62,17 @@
                   size="mini"
                   class="block"
                   type="success"
-                  :style="{ marginTop: '31px', marginLeft: '8px' }"
+                  :style="{
+                    marginTop: '31px',
+                    marginLeft: '8px',
+                    width: '106px'
+                  }"
                   @click="handleGetKeycode()"
+                  :disabled="
+                    login.keycodeActive && form.username ? false : true
+                  "
                 >
-                  获取验证码
+                  {{ login.keycodeText }}
                 </el-button>
               </el-col>
             </el-row>
@@ -74,8 +81,9 @@
               class="block"
               :style="{ width: '100%', marginTop: '20px' }"
               @click="onSubmit('form')"
+              :disabled="form.keycode ? false : true"
             >
-              登录
+              {{ login.isActive === 'login' ? '登录' : '注册' }}
             </el-button>
           </el-form>
         </div>
@@ -144,7 +152,7 @@ export default {
     }
     return {
       form: {
-        username: '',
+        username: 'u123@qq.com',
         password: '',
         keycode: '',
         passwordAgin: ''
@@ -156,7 +164,10 @@ export default {
         keycode: [{ validator: validateKeycode, trigger: 'blur' }]
       },
       login: {
-        isActive: 'login'
+        isActive: 'login',
+        keycodeText: '获取验证码',
+        keycodeActive: true,
+        timeId: ''
       }
     }
   },
@@ -165,17 +176,38 @@ export default {
       this.login.isActive = msgText
       // 切换后将表单数据清空
       this.$refs.form.resetFields()
+      // 清空定时器和恢复验证码初始值
+      clearInterval(this.login.timeId)
+      this.login.keycodeText = '获取验证码'
+      this.login.keycodeActive = true
     },
     // 获取验证码
     handleGetKeycode() {
       if (!patternEmali(this.form.username))
         return this.$message.error('请输入正确的邮箱格式！')
 
+      let tempText = 3
+      this.login.keycodeActive = false
+      if (this.login.timeId) {
+        clearInterval(this.login.timeId)
+      }
+      this.login.timeId = setInterval(() => {
+        if (tempText < 1) {
+          this.login.keycodeActive = true
+          this.login.keycodeText = '再次获取'
+          tempText = 3
+          clearInterval(this.login.timeId)
+          return
+        }
+        this.login.keycodeText = tempText
+        tempText--
+      }, 1000)
+
       POSTGetKeycode({
         username: this.form.username,
         module: this.login.isActive
       })
-        .then(({ data }) => {
+        .then(data => {
           if (data.resCode !== 0) return this.$message.error(data.message)
           this.$message({
             message: '获取验证码成功',
@@ -200,11 +232,8 @@ export default {
             password: this?.form?.password,
             code: this?.form?.keycode
           })
-            .then(({ data }) => {
-              if (data.resCode !== 0) {
-                this.form.keycode = ''
-                return this.$message.error(data.message)
-              }
+            .then(data => {
+              if (data.resCode !== 0) return (this.form.keycode = '')
 
               this.$message({
                 message:

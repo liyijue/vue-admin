@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Message } from 'element-ui'
 
 const service = axios.create({
   baseURL: '/api',
@@ -19,9 +20,14 @@ service.interceptors.request.use(
 
 // 添加响应拦截器
 service.interceptors.response.use(
-  function(response) {
+  function({ data }) {
     // 对响应数据做点什么
-    return response
+    if (data.resCode !== 0) {
+      Message.error(data.message)
+      return data
+    }
+
+    return data
   },
   function(error) {
     // 对响应错误做些什么
