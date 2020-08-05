@@ -16,7 +16,18 @@ const routes = [
   {
     path: '/layout',
     name: 'layout',
-    component: () => import('@/views/Layout')
+    component: () => import('@/views/Layout'),
+    children: [
+      {
+        path: '',
+        redirect: 'console'
+      },
+      {
+        path: 'console',
+        name: 'console',
+        component: () => import('@/views/Console')
+      }
+    ]
   }
 ]
 

@@ -1,19 +1,30 @@
 <template>
   <div>
-    <el-container :style="{ height: '100vh' }">
-      <el-aside width="200px" :style="{ backgroundColor: 'pink' }"
-        >Aside</el-aside
-      >
-      <el-container>
-        <el-header :style="{ backgroundColor: 'orange' }">Header</el-header>
-        <el-main :style="{ backgroundColor: 'blue' }">Main</el-main>
-      </el-container>
-    </el-container>
+    <Header />
+    <div class="layout-warp">
+      <Aside />
+      <Main />
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+import Aside from './components/Aside'
+import Header from './components/Header'
+import Main from './components/Main'
+
+export default {
+  components: {
+    Aside,
+    Header,
+    Main
+  }
+}
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="scss" scoped>
+.layout-warp {
+  display: flex;
+  flex-direction: row;
+}
+</style>
