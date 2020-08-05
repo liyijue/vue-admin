@@ -242,7 +242,7 @@ export default {
               })
               this.login.isActive === 'register'
                 ? this.loginSwitch('login')
-                : this.$router.push({ name: 'layout' })
+                : this.$router.push({ name: 'console' })
             })
             .catch(error => {
               new Error(error)

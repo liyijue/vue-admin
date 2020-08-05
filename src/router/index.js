@@ -14,17 +14,14 @@ const routes = [
     component: () => import('@/views/Login')
   },
   {
-    path: '/layout',
-    name: 'layout',
+    path: '/console',
+    name: 'console',
+    redirect: '/index',
     component: () => import('@/views/Layout'),
     children: [
       {
-        path: '',
-        redirect: 'console'
-      },
-      {
-        path: 'console',
-        name: 'console',
+        path: '/index',
+        name: 'index',
         component: () => import('@/views/Console')
       }
     ]
