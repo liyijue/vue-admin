@@ -240,7 +240,9 @@ export default {
                   this.login.isActive === 'register' ? '注册成功' : '登录成功',
                 type: 'success'
               })
-              this.loginSwitch('login')
+              this.login.isActive === 'register'
+                ? this.loginSwitch('login')
+                : this.$router.push({ name: 'layout' })
             })
             .catch(error => {
               new Error(error)
