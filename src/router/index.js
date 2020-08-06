@@ -41,6 +41,40 @@ const routes = [
         component: () => import('@/views/Console')
       }
     ]
+  },
+  {
+    path: '/message',
+    name: 'message',
+    meta: {
+      text: '信息管理',
+      index: '2'
+    },
+    children: [
+      {
+        path: '/messageList',
+        name: 'messageList',
+        meta: {
+          text: '信息列表',
+          index: '2-1'
+        }
+      },
+      {
+        path: '/messageCategory',
+        name: 'messageCategory',
+        meta: {
+          text: '信息分类',
+          index: '2-2'
+        }
+      }
+    ]
+  },
+  {
+    path: '/user',
+    name: 'user',
+    meta: {
+      text: '用户管理',
+      index: '3'
+    }
   }
 ]
 
