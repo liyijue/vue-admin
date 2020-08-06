@@ -6,22 +6,38 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/login',
+    meta: {
+      text: '首页'
+    },
+    hiden: true
   },
   {
     path: '/login',
     name: 'login',
+    meta: {
+      text: '登录'
+    },
+    hiden: true,
     component: () => import('@/views/Login')
   },
   {
     path: '/console',
     name: 'console',
     redirect: '/index',
+    meta: {
+      text: '控制台',
+      index: '1'
+    },
     component: () => import('@/views/Layout'),
     children: [
       {
         path: '/index',
         name: 'index',
+        meta: {
+          text: '首页',
+          index: '1-1'
+        },
         component: () => import('@/views/Console')
       }
     ]
