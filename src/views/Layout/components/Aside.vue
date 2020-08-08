@@ -1,8 +1,20 @@
 <template>
   <div id="aside">
-    <el-menu @open="handleOpen" default-active="1-1">
+    <el-menu
+      @open="handleOpen"
+      background-color="#344a5f"
+      text-color="#fff"
+      :style="{ width: '100%' }"
+      active-text-color="pink"
+      router
+    >
       <template v-for="item in this.menuList">
-        <el-submenu :key="item.id" :index="item.meta.index" v-if="!item.hiden">
+        <el-submenu
+          :key="item.id"
+          :index="item.meta.index"
+          v-if="!item.hiden"
+          popper-class="el-menu-subitem.is-active"
+        >
           <span slot="title">{{ item.meta.text }}</span>
           <template v-if="item.children">
             <el-menu-item-group>
