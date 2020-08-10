@@ -3,6 +3,12 @@ import VueRouter from 'vue-router'
 
 import Layout from '@/views/Layout'
 
+// 解决 element UI 导航栏点击相同路由时报错问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter)
 
 const routes = [
