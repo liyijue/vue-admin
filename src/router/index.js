@@ -35,7 +35,7 @@ const routes = [
     redirect: '/index',
     meta: {
       text: '控制台',
-      index: '1'
+      icon: 'console'
     },
     component: Layout,
     children: [
@@ -56,7 +56,7 @@ const routes = [
     redirect: '/messageList',
     meta: {
       text: '信息管理',
-      index: '2'
+      icon: 'message'
     },
     component: Layout,
     children: [
@@ -84,7 +84,7 @@ const routes = [
     redirect: '/userList',
     meta: {
       text: '用户管理',
-      index: '3'
+      icon: 'user'
     },
     component: Layout,
     children: [

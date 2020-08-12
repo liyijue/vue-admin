@@ -7,6 +7,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 import 'element-ui/lib/theme-chalk/index.css'
+import '@/icons'
 
 Vue.config.productionTip = false
 

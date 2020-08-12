@@ -8,14 +8,20 @@
       active-text-color="pink"
       router
     >
-      <template v-for="item in this.menuList">
+      <template v-for="(item, index) in this.menuList">
         <el-submenu
           :key="item.id"
-          :index="item.meta.index"
+          :index="index + ''"
           v-if="!item.hiden"
           popper-class="el-menu-subitem.is-active"
         >
-          <span slot="title">{{ item.meta.text }}</span>
+          <template slot="title">
+            <svg-icon
+              :iconName="item.meta.icon"
+              iconClass="font20 marginR10"
+            ></svg-icon>
+            <span>{{ item.meta.text }}</span>
+          </template>
           <template v-if="item.children">
             <el-menu-item-group>
               <el-menu-item
