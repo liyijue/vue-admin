@@ -1,7 +1,11 @@
 <template>
-  <div id="header">
+  <div id="header" :class="{ close_collapse: Aside_Collapse }">
     <div class="header-left">
-      <svg-icon iconName="menu" iconClass="font20 black" />
+      <svg-icon
+        iconName="menu"
+        iconClass="font20 black"
+        @click="changeAsideCollapse"
+      />
     </div>
     <div class="header-right">
       <el-avatar
@@ -14,7 +18,16 @@
 </template>
 
 <script>
-export default {}
+import { mapState, mapMutations } from 'vuex'
+
+export default {
+  methods: {
+    ...mapMutations(['changeAsideCollapse'])
+  },
+  computed: {
+    ...mapState(['Aside_Collapse'])
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -29,6 +42,9 @@ export default {}
   right: 0;
   top: 0;
   background-color: #fff;
+  &.close_collapse {
+    left: 50px;
+  }
   .header-right {
     display: flex;
     flex-wrap: nowrap;

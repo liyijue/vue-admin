@@ -1,11 +1,13 @@
 <template>
-  <div id="aside">
+  <div id="aside" :class="{ close_collapse: Aside_Collapse }">
     <el-menu
       @open="handleOpen"
       background-color="#344a5f"
       text-color="#fff"
       :style="{ width: '100%' }"
       active-text-color="pink"
+      :collapse="Aside_Collapse"
+      collapse-transition
       router
     >
       <template v-for="(item, index) in this.menuList">
@@ -40,6 +42,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
@@ -50,6 +54,9 @@ export default {
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
     }
+  },
+  computed: {
+    ...mapState(['Aside_Collapse'])
   }
 }
 </script>
@@ -59,5 +66,8 @@ export default {
   width: $layout_width;
   height: 100vh;
   background-color: #344a5f;
+  &.close_collapse {
+    width: 50px;
+  }
 }
 </style>
