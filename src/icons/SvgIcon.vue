@@ -38,5 +38,8 @@ export default {
   &.marginR10 {
     margin-right: 10px;
   }
+  &.black {
+    color: black;
+  }
 }
 </style>
