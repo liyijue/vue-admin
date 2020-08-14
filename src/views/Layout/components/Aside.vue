@@ -4,10 +4,9 @@
       @open="handleOpen"
       background-color="#344a5f"
       text-color="#fff"
-      :style="{ width: '100%' }"
+      :style="{ width: '100%', borderRight: 0 }"
       active-text-color="pink"
       :collapse="Aside_Collapse"
-      collapse-transition
       router
     >
       <template v-for="(item, index) in this.menuList">
@@ -63,9 +62,13 @@ export default {
 
 <style lang="scss" scoped>
 #aside {
+  @import '@/styles/config.scss';
+
   width: $layout_width;
   height: 100vh;
   background-color: #344a5f;
+  overflow: hidden;
+  @include transitionW1S(transition, width 0.5s);
   &.close_collapse {
     width: 50px;
   }

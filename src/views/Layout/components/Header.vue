@@ -4,7 +4,7 @@
       <svg-icon
         iconName="menu"
         iconClass="font20 black"
-        @click="changeAsideCollapse"
+        @click="handleChangeAside"
       />
     </div>
     <div class="header-right">
@@ -22,7 +22,14 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   methods: {
-    ...mapMutations(['changeAsideCollapse'])
+    ...mapMutations(['changeAsideCollapse']),
+    handleChangeAside() {
+      this.changeAsideCollapse()
+      localStorage.setItem(
+        'Aside_Collapse',
+        JSON.stringify(this.Aside_Collapse)
+      )
+    }
   },
   computed: {
     ...mapState(['Aside_Collapse'])
@@ -32,6 +39,8 @@ export default {
 
 <style lang="scss" scoped>
 #header {
+  @import '@/styles/config.scss';
+
   height: 75px;
   display: flex;
   justify-content: space-between;
@@ -41,6 +50,7 @@ export default {
   left: $layout_width;
   right: 0;
   top: 0;
+  @include transitionW1S(transition, left 0.5s);
   background-color: #fff;
   &.close_collapse {
     left: 50px;

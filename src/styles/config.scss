@@ -1,0 +1,5 @@
+$layout_width: 250px;
+
+@mixin transitionW1S($type, $value) {
+  #{$type}: $value;
+}
