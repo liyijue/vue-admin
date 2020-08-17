@@ -95,7 +95,6 @@
 <script>
 import { mapActions } from 'vuex'
 import { patternEmali, patternPassword, patterKeyCode } from '@/utils/validator'
-import { POSTGetKeycode } from '@/api/login'
 
 export default {
   data() {
@@ -173,7 +172,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('login', ['POSTRegister', 'POSTLogin']),
+    ...mapActions('login', ['POSTRegister', 'POSTLogin', 'POSTGetKeycode']),
     loginSwitch(msgText) {
       this.login.isActive = msgText
       // 切换后将表单数据清空
@@ -205,22 +204,21 @@ export default {
         tempText--
       }, 1000)
 
-      POSTGetKeycode({
-        username: this.form.username,
-        module: this.login.isActive
-      })
-        .then(data => {
-          if (data.resCode !== 0) return this.$message.error(data.message)
+      this.POSTGetKeycode({
+        payload: {
+          username: this.form.username,
+          module: this.login.isActive
+        },
+        callback: ({ resCode, message }) => {
+          if (resCode !== 0) return this.$message.error(message)
+
           this.$message({
             message: '获取验证码成功',
             type: 'success'
           })
-          // 打印验证码
-          console.log(data.message)
-        })
-        .catch(error => {
-          new Error(error)
-        })
+          console.log(message)
+        }
+      })
     },
     onSubmit(form) {
       this.$refs[form].validate((valid, obj) => {
