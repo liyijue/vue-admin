@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import aside from './modules/aside'
+import login from './modules/login'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    Aside_Collapse: JSON.parse(localStorage.getItem('Aside_Collapse')) || false
-  },
-  mutations: {
-    changeAsideCollapse(state) {
-      state.Aside_Collapse = !state.Aside_Collapse
-    }
-  },
-  actions: {},
-  modules: {}
+  modules: {
+    aside,
+    login
+  }
 })

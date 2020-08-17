@@ -22,17 +22,17 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   methods: {
-    ...mapMutations(['changeAsideCollapse']),
+    ...mapMutations('aside', ['changeAsideCollapse']),
     handleChangeAside() {
       this.changeAsideCollapse()
-      localStorage.setItem(
+      sessionStorage.setItem(
         'Aside_Collapse',
         JSON.stringify(this.Aside_Collapse)
       )
     }
   },
   computed: {
-    ...mapState(['Aside_Collapse'])
+    ...mapState('aside', ['Aside_Collapse'])
   }
 }
 </script>

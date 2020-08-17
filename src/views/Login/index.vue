@@ -93,8 +93,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { patternEmali, patternPassword, patterKeyCode } from '@/utils/validator'
-import { POSTGetKeycode, POSTRegister, POSTLogin } from '@/api/login'
+import { POSTGetKeycode } from '@/api/login'
 
 export default {
   data() {
@@ -172,6 +173,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('login', ['POSTRegister', 'POSTLogin']),
     loginSwitch(msgText) {
       this.login.isActive = msgText
       // 切换后将表单数据清空
@@ -225,28 +227,30 @@ export default {
         if (valid) {
           // 登录 注册 模式
           let activeModel =
-            this.login.isActive === 'register' ? POSTRegister : POSTLogin
+            this.login.isActive === 'register'
+              ? this.POSTRegister
+              : this.POSTLogin
 
           activeModel({
-            username: this?.form?.username,
-            password: this?.form?.password,
-            code: this?.form?.keycode
-          })
-            .then(data => {
-              if (data.resCode !== 0) return (this.form.keycode = '')
+            payload: {
+              username: this?.form?.username,
+              password: this?.form?.password,
+              code: this?.form?.keycode
+            },
+            callback: ({ resCode }) => {
+              if (resCode !== 0) return (this.form.keycode = '')
 
               this.$message({
                 message:
                   this.login.isActive === 'register' ? '注册成功' : '登录成功',
                 type: 'success'
               })
+
               this.login.isActive === 'register'
                 ? this.loginSwitch('login')
                 : this.$router.push({ name: 'console' })
-            })
-            .catch(error => {
-              new Error(error)
-            })
+            }
+          })
         } else {
           this.form.keycode = ''
           console.log('error submit!', obj)

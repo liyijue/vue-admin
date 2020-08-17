@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['Aside_Collapse'])
+    ...mapState('aside', ['Aside_Collapse'])
   }
 }
 </script>

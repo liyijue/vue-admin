@@ -1,7 +1,7 @@
 import service from '@/utils/service'
 
 // 获取注册的验证码
-export const POSTGetKeycode = params => {
+export async function POSTGetKeycode(params) {
   return service.request({
     method: 'POST',
     url: '/getSms/',
@@ -12,7 +12,7 @@ export const POSTGetKeycode = params => {
 }
 
 // 注册功能
-export const POSTRegister = params => {
+export async function POSTRegister(params) {
   return service.request({
     method: 'POST',
     url: '/register/',
@@ -23,7 +23,7 @@ export const POSTRegister = params => {
 }
 
 // 登录功能
-export const POSTLogin = params => {
+export async function POSTLogin(params) {
   return service.request({
     method: 'POST',
     url: '/login/',
