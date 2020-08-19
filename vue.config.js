@@ -74,7 +74,7 @@ module.exports = {
     // proxy: null, // 设置代理
     proxy: {
       '/api': {
-        target: 'http://web-jshtml.cn/productapi',
+        target: 'http://web-jshtml.cn/productapi/token',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

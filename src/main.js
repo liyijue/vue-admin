@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import '@/router/config'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/icons'
 

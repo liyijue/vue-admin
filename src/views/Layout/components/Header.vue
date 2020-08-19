@@ -11,14 +11,14 @@
       <el-avatar
         src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
       ></el-avatar>
-      <div class="lv">管理员</div>
+      <div class="lv">{{ GET_USERNAME || '管理员' }}</div>
       <svg-icon iconName="signOut" iconClass="font20 black" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   methods: {
@@ -32,7 +32,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('aside', ['Aside_Collapse'])
+    ...mapState('aside', ['Aside_Collapse']),
+    ...mapGetters('login', ['GET_USERNAME'])
   }
 }
 </script>

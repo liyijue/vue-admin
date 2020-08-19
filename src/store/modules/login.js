@@ -1,10 +1,21 @@
 import { POSTRegister, POSTLogin, POSTGetKeycode } from '../../api/login'
+import cookie from 'cookiejs'
 
-const state = {}
+const state = {
+  token: '',
+  username: ''
+}
 
-const getters = {}
+const getters = {
+  GET_TOKEN: state => state.token,
+  GET_USERNAME: state => state.username
+}
 
-const mutations = {}
+const mutations = {
+  Set_State(state, { payload }) {
+    state = Object.assign(state, payload)
+  }
+}
 
 const actions = {
   // 获取验证码
@@ -17,9 +28,19 @@ const actions = {
     }
   },
   // 登录
-  async POSTLogin(_, { payload, callback }) {
+  async POSTLogin({ commit }, { payload, callback }) {
     try {
       const resData = await POSTLogin(payload)
+      const { data } = resData
+      if (!cookie.get('token')) {
+        cookie.set('token', data?.token)
+      }
+      commit({
+        type: 'Set_State',
+        payload: {
+          ...data
+        }
+      })
       callback(resData)
     } catch (error) {
       Error(error)

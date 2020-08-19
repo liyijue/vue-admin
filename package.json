@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "cookiejs": "^1.0.26",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "svg-sprite-loader": "^5.0.0",
