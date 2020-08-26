@@ -6,6 +6,10 @@ const WhiteRoutes = ['/login']
 router.beforeEach((to, _, next) => {
   if (cookie.get('token')) {
     next()
+    if ('/login' === to.path) {
+      cookie.clear('token')
+      cookie.clear('username')
+    }
   } else {
     if (WhiteRoutes.includes(to.path)) {
       next()

@@ -34,6 +34,7 @@ const actions = {
       const { data } = resData
       if (!cookie.get('token')) {
         cookie.set('token', data?.token)
+        cookie.set('username', data?.username)
       }
       commit({
         type: 'Set_State',
