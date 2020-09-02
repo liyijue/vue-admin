@@ -152,7 +152,7 @@ export default {
     }
     return {
       form: {
-        username: 'u123@qq.com',
+        username: 'c123@qq.com',
         password: '',
         keycode: '',
         passwordAgin: ''

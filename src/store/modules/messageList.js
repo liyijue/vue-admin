@@ -13,7 +13,10 @@ const mutations = {
 }
 
 const actions = {
-  async FetchMessageList({ commit }, { payload }) {
+  async FetchMessageList(
+    { commit },
+    { payload = { pageSize: 10, pageNumber: 1 } }
+  ) {
     try {
       const data = await fetchMessageList(payload)
       commit({
