@@ -24,6 +24,7 @@
       width="30%"
       :before-close="() => (dialogVisable = false)"
       :modal-append-to-body="false"
+      append-to-body
     >
       <span>该操作会退出登录, 确定吗?</span>
       <span slot="footer" class="dialog-footer">

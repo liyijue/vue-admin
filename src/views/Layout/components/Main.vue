@@ -10,7 +10,6 @@ export default {}
 
 <style lang="scss" scoped>
 #main {
-  background-color: pink;
   box-sizing: border-box;
   flex-grow: 1;
   margin-top: 115px;

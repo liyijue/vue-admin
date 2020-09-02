@@ -1,9 +1,13 @@
 import axios from 'axios'
+import cookiejs from 'cookiejs'
 import { Message } from 'element-ui'
 
 const service = axios.create({
   baseURL: '/api',
-  timeout: 5000
+  timeout: 5000,
+  headers: {
+    token: cookiejs.get('token') || ''
+  }
 })
 
 // 添加请求拦截器

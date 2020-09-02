@@ -66,7 +66,8 @@ const routes = [
         meta: {
           text: '信息列表',
           index: '/messageList'
-        }
+        },
+        component: () => import('@/views/MessageList')
       },
       {
         path: '/messageCategory',
